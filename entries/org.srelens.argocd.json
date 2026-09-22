@@ -5,14 +5,14 @@
   "repository": "https://github.com/srelens/extension-argocd",
   "license": "MIT",
   "release": {
-    "version": "0.2.0",
-    "manifestUrl": "https://github.com/srelens/extension-argocd/releases/download/v0.2.0/manifest.json",
-    "sha256": "22e3578a76715a2611b557ab74c3a4002cd55ac1d1ff759668799a61076890db",
-    "srelensApiVersion": "^0.1",
+    "version": "0.3.0",
+    "manifestUrl": "https://github.com/srelens/extension-argocd/releases/download/v0.3.0/manifest.json",
+    "sha256": "36f0e1747d1af9d59ed535ffdb3c254d3f55df02d1b652d39f78b62582615fd7",
+    "srelensApiVersion": "^0.3",
     "prerelease": true
   },
   "testedHost": {
     "repository": "https://github.com/srelens/srelens",
-    "revision": "5360059fee16560d33c05e742a95b3b64421602c"
+    "revision": "67ef94ad06271813817697e9ee81114cd3bd7876"
   }
 }

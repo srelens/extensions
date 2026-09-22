@@ -14,10 +14,14 @@ preview status and the exact tested host revision.
 
 ## Current status
 
-Both initial entries are unsigned, read-only previews requiring the native
-extension-platform build from [PR #508](https://github.com/srelens/srelens/pull/508).
-The desktop app does not yet browse or install this catalog automatically.
-Follow installation instructions in each extension repository.
+Flux and Argo CD are previews for extension API `^0.3`, with native resource
+views and explicitly granted, host-confirmed actions. Each entry records the
+exact tested host commit. Install through a compatible desktop host's app catalog
+and review the requested read and write permissions.
+
+Released manifests carry detached Ed25519 publisher signatures. The host checks
+the catalog checksum, trusted publisher key and API compatibility before
+installation. Catalog metadata itself does not authorize actions.
 
 ## Add or update an extension
 
@@ -42,5 +46,5 @@ permissions, connects clusters, or bypasses app installation consent.
 - This repository: discovery JSON and catalog validation.
 - Extension repositories: manifests, integration tests, documentation and releases.
 
-Next: a backend-owned catalog fetch/cache and verified installer in the app,
-followed by signed updates with permission-diff review. No Lens compatibility layer.
+Publisher-key delegation, rotation and permission-diff consent on updates are
+tracked in the host's extension-platform roadmap.
