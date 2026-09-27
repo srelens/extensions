@@ -1,0 +1,76 @@
+name: Sign catalog
+
+# Publishes catalog.signed.json, the catalog srelens hosts read since srelens/srelens#559.
+# A host trusts it only when the catalog key its pinned root names has signed it, before it
+# expires, and at a version higher than any it has seen, so this signs catalog.json:
+#
+# - whenever the catalog, a publisher delegation, the root or the signing scripts change;
+# - every week, well inside the 30-day expiry, so an unchanged catalog stays current;
+# - on demand.
+#
+# Before committing, it checks the result against trust/root.json, the root hosts pin
+# (scripts/verify-catalog.mjs), and it never publishes a catalog that check refuses.
+# catalog.json itself stays as it is, for hosts released before srelens/srelens#559.
+on:
+  push:
+    branches: [main]
+    paths:
+      - catalog.json
+      - publishers/**
+      - trust/**
+      - scripts/trust.mjs
+      - scripts/verify-catalog.mjs
+      - .github/workflows/sign-catalog.yml
+  schedule:
+    - cron: "23 5 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# One signing at a time, each finishing: two runs racing could publish out of order.
+concurrency:
+  group: sign-catalog
+  cancel-in-progress: false
+
+jobs:
+  sign:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - name: Sign catalog.json
+        env:
+          CATALOG_SIGNING_PRIVATE_KEY: ${{ secrets.CATALOG_SIGNING_PRIVATE_KEY }}
+        run: |
+          if [ -z "$CATALOG_SIGNING_PRIVATE_KEY" ]; then
+            echo "::error::CATALOG_SIGNING_PRIVATE_KEY is not set; refusing to publish an unsigned catalog"
+            exit 1
+          fi
+          # trust.mjs reads the key from a file: one only this job can read, gone when the step ends.
+          key="$RUNNER_TEMP/catalog.pem"
+          trap 'rm -f "$key"' EXIT
+          (umask 077; printf '%s\n' "$CATALOG_SIGNING_PRIVATE_KEY" > "$key")
+          git show HEAD:catalog.signed.json > "$RUNNER_TEMP/previous.json" 2>/dev/null || rm -f "$RUNNER_TEMP/previous.json"
+          publishers=()
+          for delegation in publishers/*.json; do publishers+=(--publisher "$delegation"); done
+          # The version is the time of signing: higher on every run, so hosts take each new one.
+          node scripts/trust.mjs catalog --in catalog.json "${publishers[@]}" \
+            --version "$(date -u +%s)" \
+            --expires "$(date -u -d '+30 days' +%Y-%m-%dT%H:%M:%SZ)" \
+            --sign "$key" > catalog.signed.json
+      - name: Check it as a srelens host would
+        run: node scripts/verify-catalog.mjs catalog.signed.json --previous "$RUNNER_TEMP/previous.json"
+      - name: Publish catalog.signed.json
+        run: |
+          version=$(node -e 'const e = JSON.parse(require("fs").readFileSync("catalog.signed.json")); console.log(JSON.parse(Buffer.from(e.payload, "base64")).version)')
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add catalog.signed.json
+          git commit -m "chore(catalog): sign catalog version $version"
+          # Onto whatever reached main meanwhile. Only this workflow writes catalog.signed.json,
+          # and one run at a time, so the rebase meets no conflict; a commit that changed
+          # catalog.json has its own run queued behind this one, at a higher version.
+          git pull --rebase --quiet origin main
+          git push
