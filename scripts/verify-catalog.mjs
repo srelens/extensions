@@ -6,7 +6,7 @@
 // - the catalog is signed by that root's catalog role, at its threshold;
 // - every publisher delegation in it is signed by the catalog role too;
 // - it has not expired, and its version is higher than `--previous`'s;
-// - it carries exactly the entries catalog.json lists.
+// - it carries exactly the entries catalog.source.json lists.
 //
 // A host checks all of this again, and more (crates/registry/src/extensions/trust.rs and
 // catalog.rs in srelens/srelens). This is the part a mistake here could get wrong: the
@@ -93,9 +93,9 @@ const publishers = (catalog.publishers ?? []).map((delegation, index) => {
   return publisher;
 });
 
-const source = readJson('catalog.json', 'catalog.json');
+const source = readJson('catalog.source.json', 'catalog.source.json');
 if (JSON.stringify(catalog.extensions) !== JSON.stringify(source.extensions)) {
-  fail('the signed catalog does not carry exactly the entries catalog.json lists');
+  fail('the signed catalog does not carry exactly the entries catalog.source.json lists');
 }
 
 if (previousPath && existsSync(previousPath)) {

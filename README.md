@@ -7,7 +7,7 @@ community-owned repositories. This repository does not host an extension runtime
 - [Flux](https://github.com/srelens/extension-flux)
 - [Argo CD](https://github.com/srelens/extension-argocd)
 
-`catalog.json` is the generated entry point; `entries/<extension-id>.json` files
+`catalog.source.json` is the generated source for the signed catalog; `entries/<extension-id>.json` files
 are the reviewed sources. Each entry declares an ID, name, description, source
 repository, license, versioned manifest URL, SHA-256 digest, extension API range,
 preview status and the exact tested host revision.
@@ -59,7 +59,7 @@ has seen. Otherwise it keeps the last catalog it verified.
   `publishers/srelens.json` delegates `org.srelens` to the srelens release key.
 - `scripts/trust.mjs` is the host's signing script
   (`scripts/extensions/trust.mjs` in srelens/srelens), copied here.
-- `.github/workflows/sign-catalog.yml` signs `catalog.json` into
+- `.github/workflows/sign-catalog.yml` signs `catalog.source.json` into
   `catalog.signed.json` whenever the catalog, a delegation, the root or the scripts
   change on `main`, and every Monday, with the signing time as the version and a
   30-day expiry. It checks the result with `scripts/verify-catalog.mjs` before
@@ -69,8 +69,8 @@ has seen. Otherwise it keeps the last catalog it verified.
 `catalog.json` stays for hosts released before #559, which read only it and only
 release signatures in the bare 64-byte form. Every release it lists today is signed
 that way. A release whose `manifest.json.sig` names its key (`{"keyid","sig"}`) is
-readable only by #559 hosts, so before one is listed, `catalog.json` has to be frozen
-and the signed catalog given its own source.
+readable only by #559 hosts. `catalog.json` is now frozen byte for byte; new entries
+and updates change `catalog.source.json`, which only the signed catalog consumes.
 
 Adding a publisher, the key ceremony and the formats are in
 [`docs/extensions/trust.md`](https://github.com/srelens/srelens/blob/dev/docs/extensions/trust.md)
