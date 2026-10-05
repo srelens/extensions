@@ -1,4 +1,4 @@
-"""Validate catalog metadata and deterministically build catalog.json (no network)."""
+"""Validate metadata and build catalog.source.json; preserve the legacy catalog."""
 import argparse
 import json
 from pathlib import Path
@@ -65,9 +65,9 @@ if __name__ == '__main__':
     parser.add_argument('--check', action='store_true')
     args = parser.parse_args()
     rendered = build()
-    target = ROOT / 'catalog.json'
+    target = ROOT / 'catalog.source.json'
     if args.check:
         if not target.exists() or target.read_text() != rendered:
-            raise SystemExit('catalog.json is stale; run python3 scripts/catalog.py')
+            raise SystemExit('catalog.source.json is stale; run python3 scripts/catalog.py')
     else:
         target.write_text(rendered)
