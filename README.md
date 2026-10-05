@@ -11,7 +11,9 @@ community-owned repositories. This repository does not host an extension runtime
 `catalog.source.json` is the generated source for the signed catalog; `entries/<extension-id>.json` files
 are the reviewed sources. Each entry declares an ID, name, description, source
 repository, license, versioned manifest URL, SHA-256 digest, extension API range,
-preview status and the exact tested host revision.
+preview status and the exact tested host revision. A release may also declare
+`package: {url, sha256}` for a `.srelens-extension` asset beside its manifest in
+the same GitHub release. Compatible hosts prefer that signed package.
 
 ## Current status
 
@@ -21,7 +23,13 @@ explicitly granted, host-confirmed actions. Each entry records the exact tested
 host commit. Install through a compatible desktop host's app catalog and review
 the requested read and write permissions.
 
-Released manifests carry detached Ed25519 publisher signatures. The host checks
+The current signed packages include official cert-manager, Flux and Argo CD logos.
+cert-manager also provides an Overview with health, expiry monitoring and upcoming
+expirations. Update a manifest-only installation to the listed version to install
+its logo.
+
+Released manifests carry detached Ed25519 publisher signatures. Package signatures
+cover the digest list of the manifest, documentation, license and logo. The host checks
 the catalog checksum, the publisher key the catalog delegates the app's namespace
 to, and API compatibility before installation. Catalog metadata itself does not
 authorize actions.

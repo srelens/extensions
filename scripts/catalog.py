@@ -7,8 +7,8 @@ from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 
-def fields(value, expected):
-    if not isinstance(value, dict) or set(value) != set(expected):
+def fields(value, expected, optional=()):
+    if not isinstance(value, dict) or not set(expected) <= set(value) <= set(expected) | set(optional):
         raise ValueError(f'Expected fields: {", ".join(expected)}')
 
 def text(value):
@@ -39,10 +39,21 @@ def validate(entries):
             text(entry[key])
         url(entry['repository'])
         release = entry['release']
-        fields(release, ['version', 'manifestUrl', 'sha256', 'srelensApiVersion', 'prerelease'])
+        fields(release, ['version', 'manifestUrl', 'sha256', 'srelensApiVersion', 'prerelease'], ['package'])
         matches(r'(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-[0-9A-Za-z.-]+)?', release['version'])
         url(release['manifestUrl'])
         matches(r'[a-f0-9]{64}', release['sha256'])
+        if 'package' in release:
+            package = release['package']
+            fields(package, ['url', 'sha256'])
+            url(package['url'])
+            matches(r'[a-f0-9]{64}', package['sha256'])
+            parsed = urlsplit(package['url'])
+            manifest = urlsplit(release['manifestUrl'])
+            if (parsed.hostname != 'github.com' or parsed.netloc != manifest.netloc or parsed.query
+                    or parsed.path.rsplit('/', 1)[0] != manifest.path.rsplit('/', 1)[0]
+                    or not re.fullmatch(r'/[^/]+/[^/]+/releases/download/[^/]+/[^/]+\.srelens-extension', parsed.path)):
+                raise ValueError('Package must be a .srelens-extension asset beside the GitHub release manifest')
         text(release['srelensApiVersion'])
         if not isinstance(release['prerelease'], bool):
             raise ValueError('prerelease must be boolean')

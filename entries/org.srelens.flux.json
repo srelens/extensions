@@ -5,14 +5,18 @@
   "repository": "https://github.com/srelens/extension-flux",
   "license": "MIT",
   "release": {
-    "version": "0.4.0",
-    "manifestUrl": "https://github.com/srelens/extension-flux/releases/download/v0.4.0/manifest.json",
-    "sha256": "e568691ef8814cf1a7516c27f349f320764ee22cb93a1c02acacc2928c2b2657",
+    "version": "0.4.1",
+    "manifestUrl": "https://github.com/srelens/extension-flux/releases/download/v0.4.1/manifest.json",
+    "sha256": "73b96e2aadb2dc65b95cda5a5cd4cd8d9820209d2cc87427970d31e83fb17242",
     "srelensApiVersion": "^0.3",
-    "prerelease": true
+    "prerelease": true,
+    "package": {
+      "url": "https://github.com/srelens/extension-flux/releases/download/v0.4.1/flux.srelens-extension",
+      "sha256": "abfb2cdc4d0aebb6429cd34093aee451d5c68ada1f852c35e2e2985180f45791"
+    }
   },
   "testedHost": {
     "repository": "https://github.com/srelens/srelens",
-    "revision": "67ef94ad06271813817697e9ee81114cd3bd7876"
+    "revision": "daa665f7dc745b885ddfee09ec31e6ab842b0aa7"
   }
 }

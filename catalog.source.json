@@ -8,15 +8,19 @@
       "repository": "https://github.com/srelens/extension-argocd",
       "license": "MIT",
       "release": {
-        "version": "0.3.0",
-        "manifestUrl": "https://github.com/srelens/extension-argocd/releases/download/v0.3.0/manifest.json",
-        "sha256": "36f0e1747d1af9d59ed535ffdb3c254d3f55df02d1b652d39f78b62582615fd7",
+        "version": "0.3.1",
+        "manifestUrl": "https://github.com/srelens/extension-argocd/releases/download/v0.3.1/manifest.json",
+        "sha256": "708f305f656bba3fb8dbdf203398c6f94f5e309d1ce0d73014a7ba51b218b24c",
         "srelensApiVersion": "^0.3",
-        "prerelease": true
+        "prerelease": true,
+        "package": {
+          "url": "https://github.com/srelens/extension-argocd/releases/download/v0.3.1/argocd.srelens-extension",
+          "sha256": "5b1d7ad0531f232a82cb3af03c081118107bd78b295d63056f8e85542b87d1f7"
+        }
       },
       "testedHost": {
         "repository": "https://github.com/srelens/srelens",
-        "revision": "67ef94ad06271813817697e9ee81114cd3bd7876"
+        "revision": "daa665f7dc745b885ddfee09ec31e6ab842b0aa7"
       }
     },
     {
@@ -26,15 +30,19 @@
       "repository": "https://github.com/srelens/extension-cert-manager",
       "license": "MIT",
       "release": {
-        "version": "0.1.0",
-        "manifestUrl": "https://github.com/srelens/extension-cert-manager/releases/download/v0.1.0/manifest.json",
-        "sha256": "b28a3d2e80257fd509fa6083a39a580e3460dffa5c75ebcff614de014131c802",
+        "version": "0.2.0",
+        "manifestUrl": "https://github.com/srelens/extension-cert-manager/releases/download/v0.2.0/manifest.json",
+        "sha256": "b37289fcbaee8cecbc5fd14a53f02c037aba6c4db5d4378f35d89cb8a8d082a5",
         "srelensApiVersion": "^0.7",
-        "prerelease": true
+        "prerelease": true,
+        "package": {
+          "url": "https://github.com/srelens/extension-cert-manager/releases/download/v0.2.0/cert-manager.srelens-extension",
+          "sha256": "357b6b85923b7c2f32a993e6d501dc823bacecc3f1215bf4acdf6c8d3969239e"
+        }
       },
       "testedHost": {
         "repository": "https://github.com/srelens/srelens",
-        "revision": "05e73c29d2b4d2c7007f2cf1f6117fa91a0c47a4"
+        "revision": "daa665f7dc745b885ddfee09ec31e6ab842b0aa7"
       }
     },
     {
@@ -44,15 +52,19 @@
       "repository": "https://github.com/srelens/extension-flux",
       "license": "MIT",
       "release": {
-        "version": "0.4.0",
-        "manifestUrl": "https://github.com/srelens/extension-flux/releases/download/v0.4.0/manifest.json",
-        "sha256": "e568691ef8814cf1a7516c27f349f320764ee22cb93a1c02acacc2928c2b2657",
+        "version": "0.4.1",
+        "manifestUrl": "https://github.com/srelens/extension-flux/releases/download/v0.4.1/manifest.json",
+        "sha256": "73b96e2aadb2dc65b95cda5a5cd4cd8d9820209d2cc87427970d31e83fb17242",
         "srelensApiVersion": "^0.3",
-        "prerelease": true
+        "prerelease": true,
+        "package": {
+          "url": "https://github.com/srelens/extension-flux/releases/download/v0.4.1/flux.srelens-extension",
+          "sha256": "abfb2cdc4d0aebb6429cd34093aee451d5c68ada1f852c35e2e2985180f45791"
+        }
       },
       "testedHost": {
         "repository": "https://github.com/srelens/srelens",
-        "revision": "67ef94ad06271813817697e9ee81114cd3bd7876"
+        "revision": "daa665f7dc745b885ddfee09ec31e6ab842b0aa7"
       }
     }
   ]

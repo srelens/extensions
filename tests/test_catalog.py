@@ -59,3 +59,21 @@ class CatalogTests(unittest.TestCase):
         with self.assertRaises(ValueError):validate([entry])
         entry=copy.deepcopy(ENTRY);entry['release']['prerelease']='true'
         with self.assertRaises(ValueError):validate([entry])
+
+    def test_accepts_a_package_from_the_manifest_release(self):
+        entry = copy.deepcopy(ENTRY)
+        entry["release"]["package"] = {"url": ENTRY["release"]["manifestUrl"].replace("manifest.json", "flux.srelens-extension"), "sha256": "c" * 64}
+        validate([entry])
+
+    def test_rejects_bad_package_metadata(self):
+        good = {"url": ENTRY["release"]["manifestUrl"].replace("manifest.json", "flux.srelens-extension"), "sha256": "c" * 64}
+        for package in [{}, {"url": good["url"]}, {**good, "sha256": "bad"}, {**good, "extra": True},
+                        {**good, "url": "http://example.com/app.srelens-extension"},
+                        {**good, "url": "https://example.com/app.srelens-extension"},
+                        {**good, "url": good["url"].replace("v0.2.0", "v9.0.0")},
+                        {**good, "url": good["url"] + "?download=1"},
+                        {**good, "url": good["url"].replace(".srelens-extension", ".zip")}]:
+            entry = copy.deepcopy(ENTRY)
+            entry["release"]["package"] = package
+            with self.subTest(package=package), self.assertRaises(ValueError):
+                validate([entry])
