@@ -8,6 +8,15 @@ import unittest
 from scripts.catalog import validate
 ENTRY = {"id":"org.srelens.flux","name":"Flux","description":"Native Flux views","repository":"https://github.com/srelens/extension-flux","license":"MIT","release":{"version":"0.2.0","manifestUrl":"https://github.com/srelens/extension-flux/releases/download/v0.2.0/manifest.json","sha256":"a"*64,"srelensApiVersion":"^0.1","prerelease":True},"testedHost":{"repository":"https://github.com/srelens/srelens","revision":"b"*40}}
 class CatalogTests(unittest.TestCase):
+    def test_cert_manager_is_discoverable_without_changing_legacy_catalog(self):
+        from scripts.catalog import build
+        entries = json.loads(build())['extensions']
+        app = next((entry for entry in entries if entry['id'] == 'org.srelens.cert-manager'), None)
+        self.assertIsNotNone(app, 'The signed catalog source must offer cert-manager')
+        self.assertEqual(app['release']['srelensApiVersion'], '^0.7')
+        self.assertTrue(app['release']['prerelease'])
+        legacy = json.loads((Path(__file__).parents[1] / 'catalog.json').read_text())
+        self.assertNotIn('org.srelens.cert-manager', [entry['id'] for entry in legacy['extensions']])
     def test_generation_preserves_the_legacy_catalog(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

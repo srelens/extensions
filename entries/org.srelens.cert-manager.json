@@ -1,0 +1,18 @@
+{
+  "id": "org.srelens.cert-manager",
+  "name": "cert-manager",
+  "description": "Certificates, issuers, expiry monitoring and host-confirmed renewal for srelens.",
+  "repository": "https://github.com/srelens/extension-cert-manager",
+  "license": "MIT",
+  "release": {
+    "version": "0.1.0",
+    "manifestUrl": "https://github.com/srelens/extension-cert-manager/releases/download/v0.1.0/manifest.json",
+    "sha256": "b28a3d2e80257fd509fa6083a39a580e3460dffa5c75ebcff614de014131c802",
+    "srelensApiVersion": "^0.7",
+    "prerelease": true
+  },
+  "testedHost": {
+    "repository": "https://github.com/srelens/srelens",
+    "revision": "05e73c29d2b4d2c7007f2cf1f6117fa91a0c47a4"
+  }
+}

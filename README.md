@@ -6,6 +6,7 @@ community-owned repositories. This repository does not host an extension runtime
 
 - [Flux](https://github.com/srelens/extension-flux)
 - [Argo CD](https://github.com/srelens/extension-argocd)
+- [cert-manager](https://github.com/srelens/extension-cert-manager)
 
 `catalog.source.json` is the generated source for the signed catalog; `entries/<extension-id>.json` files
 are the reviewed sources. Each entry declares an ID, name, description, source
@@ -14,10 +15,11 @@ preview status and the exact tested host revision.
 
 ## Current status
 
-Flux and Argo CD are previews for extension API `^0.3`, with native resource
-views and explicitly granted, host-confirmed actions. Each entry records the
-exact tested host commit. Install through a compatible desktop host's app catalog
-and review the requested read and write permissions.
+Flux and Argo CD are previews for extension API `^0.3`; cert-manager requires
+`^0.7` for its configurable expiry card. They provide native resource views and
+explicitly granted, host-confirmed actions. Each entry records the exact tested
+host commit. Install through a compatible desktop host's app catalog and review
+the requested read and write permissions.
 
 Released manifests carry detached Ed25519 publisher signatures. The host checks
 the catalog checksum, the publisher key the catalog delegates the app's namespace
