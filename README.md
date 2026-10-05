@@ -56,7 +56,7 @@ has seen. Otherwise it keeps the last catalog it verified.
   (`crates/registry/src/extensions/trust/root.json` in srelens/srelens). It names the
   catalog key; nothing here can change which key that is.
 - `publishers/<id>.json` are the delegations, each signed once with the catalog key.
-  `publishers/srelens.json` delegates `org.srelens` to the srelens release key.
+  `publishers/srelens.json` delegates `org.srelens` to the srelens release keys.
 - `scripts/trust.mjs` is the host's signing script
   (`scripts/extensions/trust.mjs` in srelens/srelens), copied here.
 - `.github/workflows/sign-catalog.yml` signs `catalog.json` into
